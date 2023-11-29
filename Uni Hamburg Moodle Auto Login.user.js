@@ -5,7 +5,7 @@
 // @description    Automatically logs you in to the Uni Hamburg Moodle, given automated password filling.
 // @description:de Loggt Dich automatisch in das Moodle der Uni Hamburg ein, gegeben, dass die Login-Daten automatisch ausgefüllt werden.
 
-// @version        1.0.3
+// @version        1.0.4
 // @copyright      2023+, Jan G. (Rsge)
 // @license        Mozilla Public License 2.0
 // @icon           https://lernen.min.uni-hamburg.de/theme/image.php/uhh/theme/1698645195/favicon
@@ -19,7 +19,7 @@
 // @match          https://lernen.min.uni-hamburg.de/login/*
 // @match          https://login.uni-hamburg.de/idp/*
 
-// @run-at         document-idle
+// @run-at         document-end
 // @grant          none
 // ==/UserScript==
 
@@ -34,7 +34,10 @@
     }
     let secondLoginButtonElements = document.getElementsByClassName("form-element form-button");
     if (secondLoginButtonElements.length > 0) {
-      secondLoginButtonElements[0].click();
+      let passwordInput = document.getElementById("password");
+      passwordInput.addEventListener("input", function() {
+        secondLoginButtonElements[0].click();
+      });
     }
   }, false);
 })();
