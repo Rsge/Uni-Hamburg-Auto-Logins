@@ -1,9 +1,9 @@
-# Uni Hamburg Moodle Auto Login
+# Uni Hamburg Auto Logins
 
 
-Automatically logs you in to the Uni Hamburg Moodle, given automated login data filling.
+Automatically logs you in to a few different Uni Hamburg sites, given automated password filling.
 
 ---
 
-Loggt Dich automatisch in das Moodle der Uni Hamburg ein, gegeben, dass die Login-Daten automatisch ausgefüllt werden.
+Loggt Dich automatisch in verschiedene Seiten der Uni Hamburg ein, gegeben, dass die Login-Daten automatisch ausgefüllt werden.
 
