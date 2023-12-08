@@ -5,7 +5,7 @@
 // @description    Automatically logs you in to a few different Uni Hamburg sites, given automated password filling.
 // @description:de Loggt Dich automatisch in verschiedene Seiten der Uni Hamburg ein, gegeben, dass die Login-Daten automatisch ausgefüllt werden.
 
-// @version        2.0.1
+// @version        2.1.0
 // @copyright      2023+, Jan G. (Rsge)
 // @license        Mozilla Public License 2.0
 // @icon           https://www.uni-hamburg.de/favicon.ico
@@ -19,6 +19,8 @@
 // @match          https://lernen.min.uni-hamburg.de/login/*
 // @match          https://www.openolat.uni-hamburg.de/dmz/*
 // @match          https://login.uni-hamburg.de/idp/*
+// @match          https://www.stine.uni-hamburg.de/scripts/*
+// @match          https://cndsf.ad.uni-hamburg.de/IdentityServer/Account/*
 
 // @run-at         document-end
 // @grant          none
@@ -27,6 +29,18 @@
 (function() {
   'use strict';
 
+  // Checks for input password. Clicks if there is one, otherwise waits for input to click.
+  function checkPwdLogin(pwdInput, button) {
+    if (pwdInput?.value.length > 0) {
+      button.click();
+    } else {
+      pwdInput.addEventListener("input", function() {
+        button.click();
+      });
+    }
+  }
+
+  // Carries out login sequence.
   window.addEventListener('load', function() {
     // lernen.min.uni-hamburg.de
     let lernenMINLoginButtons = document.getElementsByClassName("btn login-identityprovider-btn btn-primary btn-lg btn-block");
@@ -54,14 +68,22 @@
     // login.uni-hamburg.de
     let loginLoginButtons = document.getElementsByClassName("form-element form-button");
     if (loginLoginButtons.length > 0) {
-      let passwordInput = document.getElementById("password");
-      if (passwordInput?.value.length > 0) {
-        loginLoginButtons[0].click();
-      } else {
-        passwordInput.addEventListener("input", function() {
-          loginLoginButtons[0].click();
-        });
-      }
+      let pwdInput = document.getElementById("password");
+      checkPwdLogin(pwdInput, loginLoginButtons[0]);
+      return;
+    }
+    // stine.uni-hamburg.de
+    let stineOpenLoginButton = document.getElementById("logIn_btn");
+    if (stineOpenLoginButton) {
+      stineOpenLoginButton.click();
+      return;
+    }
+    // cndsf.ad.uni-hamburg.de
+    let campusNetLoginButtons = document.getElementsByClassName("btn btn-primary");
+    if (campusNetLoginButtons.length > 0) {
+      let pwdInput = document.getElementById("Password");
+      checkPwdLogin(pwdInput, campusNetLoginButtons[0]);
+      return;
     }
   }, false);
 })();
