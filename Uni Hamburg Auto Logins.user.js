@@ -5,14 +5,14 @@
 // @description    Automatically logs you in to a few different Uni Hamburg sites, given automated password filling.
 // @description:de Loggt Dich automatisch in verschiedene Seiten der Uni Hamburg ein, gegeben, dass die Login-Daten automatisch ausgefüllt werden.
 
-// @version        2.1.0
+// @version        2.1.1
 // @copyright      2023+, Jan G. (Rsge)
 // @license        Mozilla Public License 2.0
 // @icon           https://www.uni-hamburg.de/favicon.ico
 
 // @namespace      https://github.com/Rsge
-// @homepageURL    https://github.com/Rsge/Uni-Hamburg-Moodle-Auto-Login
-// @supportURL     https://github.com/Rsge/Uni-Hamburg-Moodle-Auto-Login/issues
+// @homepageURL    https://github.com/Rsge/Uni-Hamburg-Auto-Login
+// @supportURL     https://github.com/Rsge/Uni-Hamburg-Auto-Login/issues
 // @downloadURL    https://update.greasyfork.org/scripts/481691/Uni%20Hamburg%20Auto%20Logins.user.js
 // @updateURL      https://update.greasyfork.org/scripts/481691/Uni%20Hamburg%20Auto%20Logins.user.js
 
