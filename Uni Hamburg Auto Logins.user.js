@@ -5,7 +5,7 @@
 // @description    Automatically logs you in to a few different Uni Hamburg sites, given automated password filling.
 // @description:de Loggt Dich automatisch in verschiedene Seiten der Uni Hamburg ein, gegeben, dass die Login-Daten automatisch ausgefüllt werden.
 
-// @version        2.1.1
+// @version        2.1.2
 // @copyright      2023+, Jan G. (Rsge)
 // @license        Mozilla Public License 2.0
 // @icon           https://www.uni-hamburg.de/favicon.ico
@@ -19,6 +19,7 @@
 // @match          https://lernen.min.uni-hamburg.de/login/*
 // @match          https://www.openolat.uni-hamburg.de/dmz/*
 // @match          https://login.uni-hamburg.de/idp/*
+// @match          https://stine.uni-hamburg.de/scripts/*
 // @match          https://www.stine.uni-hamburg.de/scripts/*
 // @match          https://cndsf.ad.uni-hamburg.de/IdentityServer/Account/*
 
