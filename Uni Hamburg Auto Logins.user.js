@@ -5,7 +5,7 @@
 // @description    Automatically logs you in to a few different Uni Hamburg sites, given automated password filling.
 // @description:de Loggt Dich automatisch in verschiedene Seiten der Uni Hamburg ein, gegeben, dass die Login-Daten automatisch ausgefüllt werden.
 
-// @version        2.2.0
+// @version        2.3.0
 // @copyright      2023+, Jan G. (Rsge)
 // @license        Mozilla Public License 2.0
 // @icon           https://www.uni-hamburg.de/favicon.ico
@@ -16,12 +16,14 @@
 // @downloadURL    https://update.greasyfork.org/scripts/481691/Uni%20Hamburg%20Auto%20Logins.user.js
 // @updateURL      https://update.greasyfork.org/scripts/481691/Uni%20Hamburg%20Auto%20Logins.meta.js
 
-// @match          https://lernen.min.uni-hamburg.de/login/*
-// @match          https://www.openolat.uni-hamburg.de/dmz/*
 // @match          https://login.uni-hamburg.de/idp/*
+// @match          https://cndsf.ad.uni-hamburg.de/IdentityServer/Account/*
+// @match          https://www-cndsf.stine.uni-hamburg.de/IdentityServer/Account/Login?*
 // @match          https://stine.uni-hamburg.de/scripts/*
 // @match          https://www.stine.uni-hamburg.de/scripts/*
-// @match          https://cndsf.ad.uni-hamburg.de/IdentityServer/Account/*
+// @match          https://lernen.min.uni-hamburg.de/login/*
+// @match          https://www.openolat.uni-hamburg.de/dmz/*
+// @match          https://surfmail.rrz.uni-hamburg.de
 // @match          https://surfmail.rrz.uni-hamburg.de/login.php?*
 
 // @run-at         document-end
@@ -82,6 +84,12 @@
     let stineOpenLoginButton = document.getElementById("logIn_btn");
     if (stineOpenLoginButton) {
       stineOpenLoginButton.click();
+      return;
+    }
+    // www-cndsf.stine.uni-hamburg.de
+    let UHHLoginBButtons = document.getElementsByClassName("btn btn-default provider-link uhhshib");
+    if (UHHLoginBButtons.length > 0) {
+      UHHLoginBButtons[0].click();
       return;
     }
     // cndsf.ad.uni-hamburg.de
