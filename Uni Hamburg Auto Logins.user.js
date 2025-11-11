@@ -5,7 +5,7 @@
 // @description    Automatically logs you in to a few different Uni Hamburg sites, given automated password filling.
 // @description:de Loggt Dich automatisch in verschiedene Seiten der Uni Hamburg ein, gegeben, dass die Login-Daten automatisch ausgefüllt werden.
 
-// @version        2.3.0
+// @version        2.4.0
 // @copyright      2023+, Jan G. (Rsge)
 // @license        Mozilla Public License 2.0
 // @icon           https://www.uni-hamburg.de/favicon.ico
@@ -25,6 +25,8 @@
 // @match          https://www.openolat.uni-hamburg.de/dmz/*
 // @match          https://surfmail.rrz.uni-hamburg.de
 // @match          https://surfmail.rrz.uni-hamburg.de/login.php?*
+// @match          https://gitlab.rrz.uni-hamburg.de/users/sign_in
+// @match          https://gitlab.rrz.uni-hamburg.de/users/auth/ldapmain/callback
 
 // @run-at         document-end
 // @grant          none
@@ -34,12 +36,14 @@
   'use strict';
 
   // Checks for input password. Clicks if there is one, otherwise waits for input to click.
-  function checkPwdLogin(pwdInput, button) {
+  function checkPwdLogin(pwdInput, button, inputLength=0) {
     if (pwdInput?.value.length > 0) {
       button.click();
     } else {
       pwdInput.addEventListener("input", function() {
-        button.click();
+        if(pwdInput?.value.length >= inputLength) {
+          button.click();
+        }
       });
     }
   }
@@ -106,6 +110,24 @@
       let pwdInput = document.getElementById("horde_pass");
       checkPwdLogin(pwdInput, surfmailLogInLoginButton);
       return;
+    }
+    // -- GitLab --
+    // gitlab.rrz.uni-hamburg.de/users/sign_in
+    // gitlab.rrz.uni-hamburg.de/users/auth/ldapmain/callback
+    let gitLabSignInButtons = document.getElementsByClassName("gl-button btn btn-block btn-md btn-confirm");
+    if (gitLabSignInButtons.length > 0) {
+      let pwdInput = document.getElementById("ldapmain_password");
+      if (pwdInput) {
+        let rememberMeCheckbox = document.getElementById("ldapmain_remember_me");
+        rememberMeCheckbox.checked = true;
+        checkPwdLogin(pwdInput, gitLabSignInButtons[0]);
+        return;
+      } else {
+        let verificationInput = document.getElementById("user_otp_attempt");
+        if (verificationInput) {
+          checkPwdLogin(verificationInput, gitLabSignInButtons[0], 6);
+        }
+      }
     }
   }, false);
 })();
