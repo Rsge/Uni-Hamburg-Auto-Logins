@@ -14,3 +14,4 @@ Loggt Dich automatisch in verschiedene Seiten der Uni Hamburg ein, gegeben, dass
 * OpenOlat
 * STiNE
 * Surfmail (Uni-Mail)
+* GitLab (RRZ)
