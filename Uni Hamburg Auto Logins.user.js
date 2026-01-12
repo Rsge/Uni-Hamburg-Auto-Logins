@@ -5,7 +5,7 @@
 // @description    Automatically logs you in to a few different Uni Hamburg sites, given automated password filling.
 // @description:de Loggt Dich automatisch in verschiedene Seiten der Uni Hamburg ein, gegeben, dass die Login-Daten automatisch ausgefüllt werden.
 
-// @version        3.0.0
+// @version        3.1.0
 // @copyright      2023+, Jan G. (Rsge)
 // @license        Mozilla Public License 2.0
 // @icon           https://www.uni-hamburg.de/favicon.ico
@@ -13,6 +13,8 @@
 // @namespace      https://github.com/Rsge
 // @homepageURL    https://github.com/Rsge/Uni-Hamburg-Auto-Login
 // @supportURL     https://github.com/Rsge/Uni-Hamburg-Auto-Login/issues
+// @downloadURL    https://update.greasyfork.org/scripts/481691/Uni%20Hamburg%20Auto%20Logins.user.js
+// @updateURL      https://update.greasyfork.org/scripts/481691/Uni%20Hamburg%20Auto%20Logins.meta.js
 
 // @match          https://login.uni-hamburg.de/idp/*
 // @match          https://cndsf.ad.uni-hamburg.de/IdentityServer/Account/*
@@ -28,8 +30,6 @@
 
 // @run-at         document-end
 // @grant          none
-// @downloadURL https://update.greasyfork.org/scripts/481691/Uni%20Hamburg%20Auto%20Logins.user.js
-// @updateURL https://update.greasyfork.org/scripts/481691/Uni%20Hamburg%20Auto%20Logins.meta.js
 // ==/UserScript==
 
 (function() {
@@ -64,16 +64,28 @@
     } else if (isSite("lernen.min.uni-hamburg.de")) {
       // Automatically refreshes session
       let node;
+      let refreshButtons;
+      let found = false;
       let observer = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
           node = mutation.addedNodes[0];
-          if (node?.className?.includes("modal moodle-has-zindex")) {
-            let refreshButtons = node.getElementsByClassName("btn btn-primary");
+          if (node?.className?.includes("modal moodle-has-zindex")
+              && !node.getElementsByClassName("modal-body")[0].firstElementChild) {
+            refreshButtons = node.getElementsByClassName("btn btn-primary");
             if (refreshButtons.length > 0) {
-              refreshButtons[0].click();
+              console.log("Dialog found.");
+              found = true;
             }
-          } else if(node?.className?.includes("modal-backdrop in show")) {
-            node.remove();
+          } else if(found && node?.className?.includes("modal-backdrop in show")) {
+            let refButton = refreshButtons[0]
+            let buttonText = refButton.textContent;
+            // This seems to be the only reliable solutiong since every other property is either equal or changes depending on context.
+            // If this weren’t included, it would also instantly close submit confirmation dialogues and the like.
+            if (buttonText == "Aktuelle Sitzung verlängern" || buttonText == "Extend session") {
+              refButton.click();
+              console.log("Refreshing confirmed.");
+              found = false;
+            }
           }
         });
       });
@@ -132,8 +144,8 @@
       return;
     }
     // -- GitLab --
-    if (isSite("gitlab.rrz.uni-hamburg.de/users/sign_in") ||
-        isSite("gitlab.rrz.uni-hamburg.de/users/auth/ldapmain/callback")) {
+    if (isSite("gitlab.rrz.uni-hamburg.de/users/sign_in")
+        || isSite("gitlab.rrz.uni-hamburg.de/users/auth/ldapmain/callback")) {
       let gitLabSignInButtons = document.getElementsByClassName("gl-button btn btn-block btn-md btn-confirm");
       let pwdInput = document.getElementById("ldapmain_password");
       if (pwdInput) {
