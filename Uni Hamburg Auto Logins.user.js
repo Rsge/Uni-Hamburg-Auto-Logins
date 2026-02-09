@@ -5,7 +5,7 @@
 // @description    Automatically logs you in to a few different Uni Hamburg sites, given automated password filling.
 // @description:de Loggt Dich automatisch in verschiedene Seiten der Uni Hamburg ein, gegeben, dass die Login-Daten automatisch ausgefüllt werden.
 
-// @version        3.1.0
+// @version        3.1.1
 // @copyright      2023+, Jan G. (Rsge)
 // @license        Mozilla Public License 2.0
 // @icon           https://www.uni-hamburg.de/favicon.ico
@@ -50,7 +50,8 @@
 
   // Checks if the site URL matches with the given argument.
   function isSite(site) {
-    return window.location.href.startsWith("https://" + site);
+    return window.location.href.startsWith("https://" + site)
+    || window.location.href.startsWith("https://www." + site);
   }
 
   // Carries out login sequences.
@@ -122,7 +123,18 @@
     // -- STiNE --
     if (isSite("stine.uni-hamburg.de")) {
       let stineOpenLoginButton = document.getElementById("logIn_btn");
-      stineOpenLoginButton?.click();
+      if (stineOpenLoginButton) {
+        stineOpenLoginButton.click();
+      } else {
+        let stineLinks = document.getElementsByClassName("no-underline text-white hover:text-white hover:underline underline-offset-4");
+        if (stineLinks?.length >= 4) {
+          let logInLink = stineLinks[3];
+          let logInLinkText = logInLink.outerText;
+          if (logInLinkText == "ANMELDEN" || logInLinkText == "LOG IN") {
+            logInLink.click();
+          }
+        }
+      }
       return;
     }
     if (isSite("www-cndsf.stine.uni-hamburg.de")) {
