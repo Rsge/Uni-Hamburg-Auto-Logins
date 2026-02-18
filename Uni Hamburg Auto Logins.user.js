@@ -5,7 +5,7 @@
 // @description    Automatically logs you in to a few different Uni Hamburg sites, given automated password filling.
 // @description:de Loggt Dich automatisch in verschiedene Seiten der Uni Hamburg ein, gegeben, dass die Login-Daten automatisch ausgefüllt werden.
 
-// @version        3.1.1
+// @version        3.1.2
 // @copyright      2023+, Jan G. (Rsge)
 // @license        Mozilla Public License 2.0
 // @icon           https://www.uni-hamburg.de/favicon.ico
@@ -35,6 +35,17 @@
 (function() {
   'use strict';
 
+  // Wait time in s
+  const T = 1;
+
+  // Basic functions
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+  function sToMs(s) {
+    return s * 1000;
+  }
+
   // Checks for input password. Clicks if there is one, otherwise waits for input to click.
   function checkPwdLogin(pwdInput, button, inputLength=0) {
     if (pwdInput?.value.length > 0) {
@@ -63,12 +74,12 @@
       lernenMINLoginButtons[0]?.click();
       return;
     } else if (isSite("lernen.min.uni-hamburg.de")) {
-      // Automatically refreshes session
+      // Automatically refresh session.
       let node;
       let refreshButtons;
       let found = false;
       let observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
+        mutations.forEach(async function(mutation) {
           node = mutation.addedNodes[0];
           if (node?.className?.includes("modal moodle-has-zindex")
               && !node.getElementsByClassName("modal-body")[0].firstElementChild) {
@@ -78,11 +89,14 @@
               found = true;
             }
           } else if(found && node?.className?.includes("modal-backdrop in show")) {
-            let refButton = refreshButtons[0]
+            let refButton = refreshButtons[0];
             let buttonText = refButton.textContent;
-            // This seems to be the only reliable solutiong since every other property is either equal or changes depending on context.
+            // This _seems_ to be the only reliable solution since every other property is either equal or changes depending on context.
             // If this weren’t included, it would also instantly close submit confirmation dialogues and the like.
-            if (buttonText == "Aktuelle Sitzung verlängern" || buttonText == "Extend session") {
+            const clickButtonTexts = ["Aktuelle Sitzung verlängern", "Extend session", "Erneut anmelden", "Log in again"];
+            if (clickButtonTexts.includes(buttonText)) {
+              console.log("Background found.");
+              await sleep(sToMs(T));
               refButton.click();
               console.log("Refreshing confirmed.");
               found = false;
@@ -94,6 +108,7 @@
         childList: true,
         subtree: true
       });
+      console.log("Observing for timeout");
       return;
     }
     // -- OpenOlat --
