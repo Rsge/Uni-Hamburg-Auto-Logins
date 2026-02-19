@@ -5,7 +5,7 @@
 // @description    Automatically logs you in to a few different Uni Hamburg sites, given automated password filling.
 // @description:de Loggt Dich automatisch in verschiedene Seiten der Uni Hamburg ein, gegeben, dass die Login-Daten automatisch ausgefüllt werden.
 
-// @version        3.1.2
+// @version        3.1.3
 // @copyright      2023+, Jan G. (Rsge)
 // @license        Mozilla Public License 2.0
 // @icon           https://www.uni-hamburg.de/favicon.ico
@@ -96,6 +96,9 @@
             const clickButtonTexts = ["Aktuelle Sitzung verlängern", "Extend session", "Erneut anmelden", "Log in again"];
             if (clickButtonTexts.includes(buttonText)) {
               console.log("Background found.");
+              let dialog = refButton.parentNode.parentNode.parentNode.parentNode;
+              dialog.hidden = true;
+              node.hidden = true;
               await sleep(sToMs(T));
               refButton.click();
               console.log("Refreshing confirmed.");
