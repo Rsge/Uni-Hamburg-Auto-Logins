@@ -5,7 +5,7 @@
 // @description    Automatically logs you in to a few different Uni Hamburg sites, given automated password filling.
 // @description:de Loggt Dich automatisch in verschiedene Seiten der Uni Hamburg ein, gegeben, dass die Login-Daten automatisch ausgefüllt werden.
 
-// @version        3.1.3
+// @version        3.1.4
 // @copyright      2023+, Jan G. (Rsge)
 // @license        Mozilla Public License 2.0
 // @icon           https://www.uni-hamburg.de/favicon.ico
@@ -13,8 +13,6 @@
 // @namespace      https://github.com/Rsge
 // @homepageURL    https://github.com/Rsge/Uni-Hamburg-Auto-Login
 // @supportURL     https://github.com/Rsge/Uni-Hamburg-Auto-Login/issues
-// @downloadURL    https://update.greasyfork.org/scripts/481691/Uni%20Hamburg%20Auto%20Logins.user.js
-// @updateURL      https://update.greasyfork.org/scripts/481691/Uni%20Hamburg%20Auto%20Logins.meta.js
 
 // @match          https://login.uni-hamburg.de/idp/*
 // @match          https://cndsf.ad.uni-hamburg.de/IdentityServer/Account/*
@@ -30,6 +28,8 @@
 
 // @run-at         document-end
 // @grant          none
+// @downloadURL https://update.greasyfork.org/scripts/481691/Uni%20Hamburg%20Auto%20Logins.user.js
+// @updateURL https://update.greasyfork.org/scripts/481691/Uni%20Hamburg%20Auto%20Logins.meta.js
 // ==/UserScript==
 
 (function() {
@@ -70,7 +70,7 @@
     // -- Moodle --
     if (isSite("lernen.min.uni-hamburg.de/login")) {
       // Login
-      let lernenMINLoginButtons = document.getElementsByClassName("btn login-identityprovider-btn btn-primary btn-lg btn-block");
+      let lernenMINLoginButtons = document.getElementsByClassName("btn login-identityprovider-btn btn-primary btn-lg mb-3");
       lernenMINLoginButtons[0]?.click();
       return;
     } else if (isSite("lernen.min.uni-hamburg.de")) {
