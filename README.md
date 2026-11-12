@@ -17,3 +17,4 @@ Lässt Dich außerdem dauerhaft in Moodle eingeloggt sein, indem es den Timeout-
 * STiNE
 * Surfmail (Uni-Mail)
 * GitLab (RRZ)
+* SprachCommSy

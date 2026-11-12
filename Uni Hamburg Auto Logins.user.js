@@ -5,7 +5,7 @@
 // @description    Automatically logs you in to a few different Uni Hamburg sites, given automated password filling.
 // @description:de Loggt Dich automatisch in verschiedene Seiten der Uni Hamburg ein, gegeben, dass die Login-Daten automatisch ausgefüllt werden.
 
-// @version        3.1.4
+// @version        3.2.0
 // @copyright      2023+, Jan G. (Rsge)
 // @license        Mozilla Public License 2.0
 // @icon           https://www.uni-hamburg.de/favicon.ico
@@ -25,6 +25,7 @@
 // @match          https://surfmail.rrz.uni-hamburg.de/login.php?*
 // @match          https://gitlab.rrz.uni-hamburg.de/users/sign_in
 // @match          https://gitlab.rrz.uni-hamburg.de/users/auth/ldapmain/callback
+// @match          https://www.sprachcommsy.uni-hamburg.de/login/*
 
 // @run-at         document-end
 // @grant          none
@@ -189,6 +190,12 @@
           checkPwdLogin(verificationInput, gitLabSignInButtons[0], 6);
         }
       }
+      return;
+    }
+    if (isSite("sprachcommsy.uni-hamburg.de/login")) {
+      let loginButton = document.getElementById("shib_login_link");
+      loginButton?.click();
+      return;
     }
   }, false);
 })();
